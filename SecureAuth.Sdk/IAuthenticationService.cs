@@ -13,9 +13,11 @@
         SendOtpResponse SendPhonecallOtp(PhonecallOtpRequest request);
         SendOtpResponse SendPushOtp(PushOtpRequest request);
         SendOtpResponse SendSmsOtp(SmsOtpRequest request);
+        SendOtpResponse SendSmsOtp(SmsOtpRequest request, SecureAuth.Sdk.Models.LanguageEnum en);
         PushAcceptResponse SendPushAccept(PushAcceptRequest request);
         BaseResponse GetPushAcceptStatus(string referenceId);
         SendOtpResponse SendAdHocSmsOtp(AdHocSmsOtpRequest request);
+        SendOtpResponse SendAdHocSmsOtp(AdHocSmsOtpRequest request, SecureAuth.Sdk.Models.LanguageEnum en);
         SendOtpResponse SendAdHocPhonecallOtp(AdHocPhonecallOtpRequest request);
         SendOtpResponse SendAdHocEmailOtp(AdHocEmailOtpRequest request);
     }

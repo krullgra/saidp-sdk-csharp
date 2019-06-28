@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SecureAuth.Sdk
 {
-    public class HmacSigningHandler : WebRequestHandler
+    public class HmacSigningHandler : HttpClientHandler
     {
         public string AppId { get; set; }
         public string AppKey { get; set; }
@@ -24,7 +24,10 @@ namespace SecureAuth.Sdk
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.Headers.Date = new DateTimeOffset(DateTime.Now, DateTime.Now - DateTime.UtcNow);
+            DateTime inputTime = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified);
+            TimeSpan offsetTime = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
+
+            request.Headers.Date = new DateTimeOffset(inputTime, offsetTime);
             var hash = HmacBasicAuthenticationHelper.BuildAuthorizationHeaderParameter(AppId, AppKey, request);
 
             var headerValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", AppId, hash)));

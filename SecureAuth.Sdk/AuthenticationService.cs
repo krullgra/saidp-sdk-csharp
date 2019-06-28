@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using SecureAuth.Sdk.Models;
 
 namespace SecureAuth.Sdk
 {
@@ -293,6 +294,34 @@ namespace SecureAuth.Sdk
         }
 
         /// <summary>
+        /// Send a one time passcode SMS message to the phone number 
+        /// associated with the phone factor ID.
+        /// </summary>
+        /// <param name="request">SmsOtpRequest</param>
+        /// <returns>SendOtpResponse</returns>
+        public SendOtpResponse SendSmsOtp(SmsOtpRequest request, LanguageEnum en)
+        {
+            string[] validFactorIds = { "Phone1", "Phone2", "Phone3", "Phone4" };
+
+            // sanitize request
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                throw new ArgumentNullException("PhonecallOtpRequest.UserId", "User ID cannot be empty.");
+            }
+            if (string.IsNullOrEmpty(request.FactorId))
+            {
+                throw new ArgumentNullException("PhonecallOtpRequest.FactorId", "FactorId cannot be empty.");
+            }
+            if (!validFactorIds.Contains(request.FactorId))
+            {
+                throw new ArgumentException("Invalid FactorId.", "PhonecallOtpRequest.FactorId");
+            }
+
+            // process request
+            return SendOtp(request, en);
+        }
+
+        /// <summary>
         /// Send one time passcode SMS message to the specified phone number.
         /// </summary>
         /// <param name="request">AdHocSmsOtpRequest</param>
@@ -310,6 +339,26 @@ namespace SecureAuth.Sdk
             }
             // process request
             return SendOtp(request);
+        }
+
+        /// <summary>
+        /// Send one time passcode SMS message to the specified phone number.
+        /// </summary>
+        /// <param name="request">AdHocSmsOtpRequest</param>
+        /// <returns>SendOtpResponse</returns>
+        public SendOtpResponse SendAdHocSmsOtp(AdHocSmsOtpRequest request, LanguageEnum en)
+        {
+            // sanitize request
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                throw new ArgumentNullException("AdHocSmsOtpRequest.UserId", "User ID cannot be empty.");
+            }
+            if (string.IsNullOrEmpty(request.Token))
+            {
+                throw new ArgumentNullException("AdHocSmsOtpRequest.Token", "Token cannot be empty");
+            }
+            // process request
+            return SendOtp(request, en);
         }
 
         /// <summary>
@@ -407,9 +456,9 @@ namespace SecureAuth.Sdk
             return this._apiClient.Post<BaseResponse>("/api/v1/auth", request);
         }
 
-        private SendOtpResponse SendOtp(BaseRequest request)
+        private SendOtpResponse SendOtp(BaseRequest request, LanguageEnum en = LanguageEnum.English)
         {
-            return this._apiClient.Post<SendOtpResponse>("/api/v1/auth", request);
+            return this._apiClient.Post<SendOtpResponse>("/api/v1/auth", request, en);
         }
         #endregion
     }
