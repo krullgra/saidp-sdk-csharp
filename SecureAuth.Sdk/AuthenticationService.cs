@@ -183,6 +183,34 @@ namespace SecureAuth.Sdk
         }
 
         /// <summary>
+        /// Send a one time passcode to the email address associated
+        /// with the email factor ID.
+        /// </summary>
+        /// <param name="request">EmailOtpRequest</param>
+        /// <returns>SendOtpResponse</returns>
+        public SendOtpResponse SendEmailOtp(EmailOtpRequest request, LanguageEnum en)
+        {
+            string[] validFactorIds = { "Email1", "Email2", "Email3", "Email4" };
+
+            // sanitize request
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                throw new ArgumentNullException("EmailOtpRequest.UserId", "User ID cannot be empty.");
+            }
+            if (string.IsNullOrEmpty(request.FactorId))
+            {
+                throw new ArgumentNullException("EmailOtpRequest.FactorId", "FactorId cannot be empty.");
+            }
+            if (!validFactorIds.Contains(request.FactorId))
+            {
+                throw new ArgumentException("Invalid FactorId.", "EmailOtpRequest.FactorId");
+            }
+
+            // process request
+            return SendOtp(request, en);
+        }
+
+        /// <summary>
         /// Send a one time passcode to the Help Desk associated
         /// with the factor ID.
         /// </summary>
@@ -236,6 +264,34 @@ namespace SecureAuth.Sdk
 
             // process request
             return SendOtp(request);
+        }
+
+        /// <summary>
+        /// Send a one time passcode to the phone number associated
+        /// with the phone factor ID.
+        /// </summary>
+        /// <param name="request">PhonecallOtpRequest</param>
+        /// <returns>SendOtpResponse</returns>
+        public SendOtpResponse SendPhonecallOtp(PhonecallOtpRequest request, LanguageEnum en)
+        {
+            string[] validFactorIds = { "Phone1", "Phone2", "Phone3", "Phone4" };
+
+            // sanitize request
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                throw new ArgumentNullException("PhonecallOtpRequest.UserId", "User ID cannot be empty.");
+            }
+            if (string.IsNullOrEmpty(request.FactorId))
+            {
+                throw new ArgumentNullException("PhonecallOtpRequest.FactorId", "FactorId cannot be empty.");
+            }
+            if (!validFactorIds.Contains(request.FactorId))
+            {
+                throw new ArgumentException("Invalid FactorId.", "PhonecallOtpRequest.FactorId");
+            }
+
+            // process request
+            return SendOtp(request, en);
         }
 
         /// <summary>
@@ -419,6 +475,26 @@ namespace SecureAuth.Sdk
             }
             // process request
             return SendOtp(request);
+        }
+
+        /// <summary>
+        /// Send one time passcode email message to the specified email address.
+        /// </summary>
+        /// <param name="request">AdHocEmailOtpRequest</param>
+        /// <returns>SendOtpResponse</returns>
+        public SendOtpResponse SendAdHocEmailOtp(AdHocEmailOtpRequest request, LanguageEnum en)
+        {
+            // sanitize request
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                throw new ArgumentNullException("AdHocEmailOtpRequest.UserId", "User ID cannot be empty.");
+            }
+            if (string.IsNullOrEmpty(request.Token))
+            {
+                throw new ArgumentNullException("AdHocEmailOtpRequest.Token", "Token cannot be empty");
+            }
+            // process request
+            return SendOtp(request, en);
         }
 
 
