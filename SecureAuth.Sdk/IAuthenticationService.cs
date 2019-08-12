@@ -19,6 +19,7 @@
         SendOtpResponse SendAdHocSmsOtp(AdHocSmsOtpRequest request);
         SendOtpResponse SendAdHocSmsOtp(AdHocSmsOtpRequest request, SecureAuth.Sdk.Models.LanguageEnum en);
         SendOtpResponse SendAdHocPhonecallOtp(AdHocPhonecallOtpRequest request);
+        SendOtpResponse SendAdHocPhonecallOtp(AdHocPhonecallOtpRequest request, SecureAuth.Sdk.Models.LanguageEnum en);
         SendOtpResponse SendAdHocEmailOtp(AdHocEmailOtpRequest request);
     }
 }

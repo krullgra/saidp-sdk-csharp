@@ -382,6 +382,26 @@ namespace SecureAuth.Sdk
         }
 
         /// <summary>
+        /// Send one time passcode to the specified phone number via voice call.
+        /// </summary>
+        /// <param name="request">AdHocPhonecallOtpRequest</param>
+        /// <returns>SendOtpResponse</returns>
+        public SendOtpResponse SendAdHocPhonecallOtp(AdHocPhonecallOtpRequest request, LanguageEnum en)
+        {
+            // sanitize request
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                throw new ArgumentNullException("AdHocPhonecallOtpRequest.UserId", "User ID cannot be empty.");
+            }
+            if (string.IsNullOrEmpty(request.Token))
+            {
+                throw new ArgumentNullException("AdHocPhonecallOtpRequest.Token", "Token cannot be empty");
+            }
+            // process request
+            return SendOtp(request, en);
+        }
+
+        /// <summary>
         /// Send one time passcode email message to the specified email address.
         /// </summary>
         /// <param name="request">AdHocEmailOtpRequest</param>
